@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <tab
+        id="@+id/bottom_hot"
+        icon="@drawable/hot"
+        title="热点" />
+    <tab
+        id="@+id/bottom_personal"
+        icon="@drawable/personal"
+        title="个性化" />
+    <tab
+        id="@+id/bottom_classify"
+        icon="@drawable/group"
+        title="分类" />
+    <tab
+        id="@+id/bottom_mine"
+        icon="@drawable/mine"
+        title="我的" />
+</tabs>
