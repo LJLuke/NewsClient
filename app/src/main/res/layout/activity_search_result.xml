@@ -12,12 +12,15 @@
         android:layout_width="match_parent"
         android:layout_height="50dp">
         <android.support.v7.widget.Toolbar
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <ImageView
+                    android:layout_marginLeft="10dp"
                     android:id="@+id/back_image"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"

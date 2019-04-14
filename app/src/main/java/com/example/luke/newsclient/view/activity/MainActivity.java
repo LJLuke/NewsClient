@@ -1,6 +1,8 @@
 package com.example.luke.newsclient.view.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,7 +14,8 @@ import android.widget.LinearLayout;
 
 import com.example.luke.newsclient.R;
 import com.example.luke.newsclient.adapter.TabFragmentAdapter;
-import com.example.luke.newsclient.view.activity.personal.PersonalActivity;
+import com.example.luke.newsclient.view.activity.personal.LoginActivity;
+import com.example.luke.newsclient.view.activity.personal.PersonActivity;
 import com.example.luke.newsclient.view.activity.search.SearchActivity;
 import com.example.luke.newsclient.view.fragment.android.AndroidTabFragment;
 import com.example.luke.newsclient.view.fragment.ios.IosTabFragment;
@@ -38,12 +41,16 @@ public class MainActivity extends AppCompatActivity {
     private List<String> mTitleList = new ArrayList<>();
     private List<Fragment> mFragmentList = new ArrayList<>();
 
+    private SharedPreferences sharedPreferences;
+    private Boolean isLogin = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         StatusBarCompat.setStatusBarColor(this, Color.parseColor("#e98f36"));
+        sharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE);
+        isLogin = sharedPreferences.getBoolean("isLogin",false);
         viewPager = findViewById(R.id.view_pager);
         tabLayout = findViewById(R.id.tab_layout);
         searchLayout = findViewById(R.id.search_layout);
@@ -76,7 +83,11 @@ public class MainActivity extends AppCompatActivity {
         personAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, PersonalActivity.class));
+                if (isLogin){
+                    startActivity(new Intent(MainActivity.this, PersonActivity.class));
+                }else {
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                }
             }
         });
     }

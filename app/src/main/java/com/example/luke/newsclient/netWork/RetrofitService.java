@@ -5,6 +5,7 @@ import com.example.luke.newsclient.entity.GanHuo.GhNews;
 import com.example.luke.newsclient.entity.News;
 import com.example.luke.newsclient.entity.Picture;
 import com.example.luke.newsclient.entity.Search;
+import com.example.luke.newsclient.entity.UserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,4 +40,8 @@ public interface RetrofitService {
     @Multipart
     @POST
     Observable<String> postUserInfo(@Url String url, @Part("type") int type, @Part("username") String username, @Part("password") String password, @Part("motto") String motto, @Part MultipartBody.Part file);
- }
+
+    @Multipart
+    @POST
+    Observable<UserInfo> getUserInfo(@Url String url, @Part("type") int type, @Part("username") String username);
+}
