@@ -2,6 +2,7 @@ package com.example.luke.newsclient.view.fragment.hot;
 
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 
 import com.example.luke.newsclient.R;
 import com.example.luke.newsclient.adapter.NewsRvAdapter;
@@ -13,6 +14,7 @@ import com.example.luke.newsclient.view.activity.NewsDetailActivity;
 import com.example.luke.newsclient.view.diyView.LineItemDecoration;
 import com.example.luke.newsclient.view.fragment.common.INewsFragment;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
+import com.mingle.widget.LoadingView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.List;
 public class HotTabFragment extends BaseTabFragment implements INewsFragment {
 
     private XRecyclerView recyclerView;
+    private LoadingView loadingView;
     private NewsRvAdapter newsRvAdapter;
     private HotNewsPre hotNewsPre;
 
@@ -35,6 +38,7 @@ public class HotTabFragment extends BaseTabFragment implements INewsFragment {
         hotNewsPre = new HotNewsPre();
         hotNewsPre.attachView(this);
         recyclerView = mView.findViewById(R.id.x_recyclerview);
+        loadingView = mView.findViewById(R.id.loadView);
         newsRvAdapter = new NewsRvAdapter(getContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -49,6 +53,7 @@ public class HotTabFragment extends BaseTabFragment implements INewsFragment {
             public void onItemClick(String url, int position) {
                 Intent intent = new Intent();
                 intent.putExtra("url",url);
+                intent.putExtra("newsTitle","热点");
                 intent.setClass(getContext(), NewsDetailActivity.class);
                 startActivity(intent);
             }
@@ -73,6 +78,7 @@ public class HotTabFragment extends BaseTabFragment implements INewsFragment {
     @Override
     protected void onFragmentFirstVisible() {
         hotNewsPre.getHotNews(newsTypeList.get(0));
+        loadingView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -83,6 +89,7 @@ public class HotTabFragment extends BaseTabFragment implements INewsFragment {
     @Override
     public void onRefreshFailure() {
         recyclerView.refreshComplete();
+        loadingView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -95,6 +102,7 @@ public class HotTabFragment extends BaseTabFragment implements INewsFragment {
         recyclerView.refreshComplete();
         newsRvAdapter.setData(newsList);
         newsRvAdapter.notifyDataSetChanged();
+        loadingView.setVisibility(View.INVISIBLE);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.example.luke.newsclient.view.fragment.picture;
 
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 
 import com.example.luke.newsclient.R;
 import com.example.luke.newsclient.adapter.PictureRvAdapter;
@@ -11,12 +12,14 @@ import com.example.luke.newsclient.presenter.picture.PicturePre;
 import com.example.luke.newsclient.view.activity.SeeBigPictureActivity;
 import com.example.luke.newsclient.view.diyView.PictureItemDecoration;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
+import com.mingle.widget.LoadingView;
 
 import java.util.List;
 
 public class PictureTabFragment extends BaseTabFragment implements IPictureFragment{
 
     private XRecyclerView recyclerView;
+    private LoadingView loadingView;
     private PictureRvAdapter pictureRvAdapter;
 
     private PicturePre picturePre;
@@ -32,6 +35,7 @@ public class PictureTabFragment extends BaseTabFragment implements IPictureFragm
         picturePre = new PicturePre();
         picturePre.attachView(this);
         recyclerView = mView.findViewById(R.id.picture_recyclerview);
+        loadingView = mView.findViewById(R.id.loadView);
         pictureRvAdapter = new PictureRvAdapter(getContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -64,6 +68,7 @@ public class PictureTabFragment extends BaseTabFragment implements IPictureFragm
         recyclerView.refreshComplete();
         pictureRvAdapter.setData(list);
         pictureRvAdapter.notifyDataSetChanged();
+        loadingView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -76,6 +81,7 @@ public class PictureTabFragment extends BaseTabFragment implements IPictureFragm
     @Override
     public void onRefreshFailure() {
         recyclerView.refreshComplete();
+        loadingView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -91,5 +97,6 @@ public class PictureTabFragment extends BaseTabFragment implements IPictureFragm
     @Override
     protected void onFragmentFirstVisible() {
         picturePre.getPictures(1);
+        loadingView.setVisibility(View.VISIBLE);
     }
 }

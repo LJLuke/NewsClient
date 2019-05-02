@@ -43,4 +43,7 @@ dependencies {
     implementation 'com.shizhefei:LargeImageView:1.1.0'
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.3.0'
+    implementation files('libs/ansj_seg-5.1.6.jar')
+    implementation files('libs/nlp-lang-1.7.7.jar')
+    implementation 'com.github.zzz40500:android-shapeLoadingView:1.0.3.2'
 }

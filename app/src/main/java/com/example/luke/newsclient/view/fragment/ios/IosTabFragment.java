@@ -2,6 +2,7 @@ package com.example.luke.newsclient.view.fragment.ios;
 
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 
 import com.example.luke.newsclient.R;
 import com.example.luke.newsclient.adapter.GhNewsRvAdapter;
@@ -12,11 +13,13 @@ import com.example.luke.newsclient.view.activity.NewsDetailActivity;
 import com.example.luke.newsclient.view.diyView.LineItemDecoration;
 import com.example.luke.newsclient.view.fragment.common.IGhNewsFragment;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
+import com.mingle.widget.LoadingView;
 
 import java.util.List;
 
 public class IosTabFragment extends BaseTabFragment implements IGhNewsFragment {
     private XRecyclerView recyclerView;
+    private LoadingView loadingView;
     private GhNewsRvAdapter newsRvAdapter;
 
     private int page = 2;
@@ -32,6 +35,7 @@ public class IosTabFragment extends BaseTabFragment implements IGhNewsFragment {
         iosNewsPre = new IosNewsPre();
         iosNewsPre.attachView(this);
         recyclerView = mView.findViewById(R.id.x_recyclerview);
+        loadingView = mView.findViewById(R.id.loadView);
         newsRvAdapter = new GhNewsRvAdapter(getContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -55,6 +59,7 @@ public class IosTabFragment extends BaseTabFragment implements IGhNewsFragment {
         newsRvAdapter.setOnItemClickListener((url, position) -> {
             Intent intent = new Intent();
             intent.putExtra("url",url);
+            intent.putExtra("newsTitle","IOS");
             intent.setClass(getActivity(),NewsDetailActivity.class);
             startActivity(intent);
         });
@@ -63,6 +68,12 @@ public class IosTabFragment extends BaseTabFragment implements IGhNewsFragment {
     @Override
     protected void onFragmentFirstVisible() {
         iosNewsPre.getIosNews(1);
+        loadingView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onFragmentVisibleChange(boolean isVisible) {
+        super.onFragmentVisibleChange(isVisible);
     }
 
     @Override
@@ -70,6 +81,7 @@ public class IosTabFragment extends BaseTabFragment implements IGhNewsFragment {
         recyclerView.refreshComplete();
         newsRvAdapter.setData(newsList);
         newsRvAdapter.notifyDataSetChanged();
+        loadingView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -82,6 +94,7 @@ public class IosTabFragment extends BaseTabFragment implements IGhNewsFragment {
     @Override
     public void onRefreshFailure() {
         recyclerView.refreshComplete();
+        loadingView.setVisibility(View.INVISIBLE);
     }
 
     @Override

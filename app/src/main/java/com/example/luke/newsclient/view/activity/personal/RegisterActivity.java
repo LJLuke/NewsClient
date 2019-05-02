@@ -79,6 +79,9 @@ public class RegisterActivity extends SwipeBackActivity implements IRegisterView
             if (TextUtils.isEmpty(password)){
                 Toast.makeText(RegisterActivity.this,"密码不能为空",Toast.LENGTH_SHORT).show();
             }
+            if (TextUtils.isEmpty(avatarPath)){
+                Toast.makeText(RegisterActivity.this,"请选择图片",Toast.LENGTH_SHORT).show();
+            }
             if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(avatarPath)){
                 File file = new File(avatarPath);
                 RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
@@ -113,7 +116,6 @@ public class RegisterActivity extends SwipeBackActivity implements IRegisterView
     public void onSuccess() {
         Toast.makeText(RegisterActivity.this,"注册成功",Toast.LENGTH_SHORT).show();
         PictureFileUtils.deleteCacheDirFile(RegisterActivity.this);
-        startActivity(new Intent(this,LoginActivity.class));
         finish();
     }
 

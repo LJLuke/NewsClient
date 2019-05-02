@@ -28,7 +28,10 @@
         <activity android:name=".view.activity.personal.RegisterActivity" />
         <activity android:name=".view.activity.personal.LoginActivity" />
         <activity android:name=".view.activity.personal.PersonActivity" />
-        <activity android:name=".view.activity.personal.PersonSettingActivity"></activity>
+        <activity android:name=".view.activity.personal.PersonSettingActivity" />
+        <activity android:name=".view.activity.personal.SettingActivity" />
+        <activity android:name=".view.activity.personal.CollectActivity"></activity>
+        <service android:name=".service.KeyWordService"/>
     </application>
 
 </manifest>

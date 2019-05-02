@@ -12,7 +12,6 @@ public class RecordSqlHelper extends SQLiteOpenHelper {
         super(context, name, factory, version);
     }
 
-
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("create table records(id integer primary key autoincrement,name varchar(200))");

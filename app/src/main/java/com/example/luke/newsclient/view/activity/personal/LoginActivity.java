@@ -53,20 +53,17 @@ public class LoginActivity extends SwipeBackActivity implements ILoginView{
         loginPre.attachView(this);
         sharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                userName = userNameText.getText().toString();
-                password = passwordText.getText().toString();
-                if (TextUtils.isEmpty(userName)){
-                    Toast.makeText(LoginActivity.this,"用户名不能为空",Toast.LENGTH_SHORT).show();
-                }
-                if (TextUtils.isEmpty(password)){
-                    Toast.makeText(LoginActivity.this,"密码不能为空",Toast.LENGTH_SHORT).show();
-                }
-                if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(password)){
-                    loginPre.getUserInfo(userName);
-                }
+        login.setOnClickListener(v -> {
+            userName = userNameText.getText().toString();
+            password = passwordText.getText().toString();
+            if (TextUtils.isEmpty(userName)){
+                Toast.makeText(LoginActivity.this,"用户名不能为空",Toast.LENGTH_SHORT).show();
+            }
+            if (TextUtils.isEmpty(password)){
+                Toast.makeText(LoginActivity.this,"密码不能为空",Toast.LENGTH_SHORT).show();
+            }
+            if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(password)){
+                loginPre.getUserInfo(userName);
             }
         });
         register.setOnClickListener(v -> {
@@ -82,7 +79,7 @@ public class LoginActivity extends SwipeBackActivity implements ILoginView{
             editor.putBoolean("isLogin",true);
             editor.putString("username",userName);
             editor.commit();
-            startActivity(new Intent(LoginActivity.this, PersonActivity.class));
+            setResult(RESULT_OK);
             finish();
         }else {
             Toast.makeText(this,"登录失败!",Toast.LENGTH_SHORT).show();
@@ -91,6 +88,6 @@ public class LoginActivity extends SwipeBackActivity implements ILoginView{
 
     @Override
     public void onFailure() {
-
+        Toast.makeText(this,"登录失败!",Toast.LENGTH_SHORT).show();
     }
 }

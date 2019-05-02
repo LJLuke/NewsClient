@@ -1,8 +1,10 @@
 package com.example.luke.newsclient.view.activity.personal;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -36,6 +38,11 @@ public class PersonActivity extends SwipeBackActivity implements IPersonView{
     private String userName;
     private String userAvatarBaseUrl = "http://47.112.27.122:8080/fucaixia/headimage/";
 
+
+    private static final int REQUEST_CODE_SETTING_ACTIVITY = 100;
+    private static final int REQUEST_CODE_LOGIN_ACTIVITY = 100;
+    private Boolean isLogin = false;
+
     private SwipeBackLayout mSwipeBackLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,27 +63,35 @@ public class PersonActivity extends SwipeBackActivity implements IPersonView{
         personPre.attachView(this);
 
         sharedPreferences =  getSharedPreferences("login", Context.MODE_PRIVATE);
-        userName = sharedPreferences.getString("username",null);
-        personPre.getUserInfo(userName);
+        isLogin = sharedPreferences.getBoolean("isLogin",false);
+        if (isLogin){
+            userName = sharedPreferences.getString("username",null);
+            personPre.getUserInfo(userName);
+        }else {
+            Glide.with(this).load(R.drawable.icon).into(userAvatar);
+            userNameText.setText("请登录");
+            userAvatar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivityForResult(new Intent(PersonActivity.this,LoginActivity.class),REQUEST_CODE_LOGIN_ACTIVITY);
+                }
+            });
+        }
+        back.setOnClickListener(v -> finish());
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
+        collectLayout.setOnClickListener(v -> {
+            if (isLogin){
+                startActivity(new Intent(PersonActivity.this,CollectActivity.class));
+            }else {
+                startActivityForResult(new Intent(PersonActivity.this,LoginActivity.class),REQUEST_CODE_LOGIN_ACTIVITY);
             }
         });
 
-        collectLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        settingLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
+        settingLayout.setOnClickListener(v -> {
+            if (isLogin){
+                startActivityForResult(new Intent(PersonActivity.this, SettingActivity.class), REQUEST_CODE_SETTING_ACTIVITY);
+            }else {
+                startActivityForResult(new Intent(PersonActivity.this,LoginActivity.class),REQUEST_CODE_LOGIN_ACTIVITY);
             }
         });
     }
@@ -90,5 +105,20 @@ public class PersonActivity extends SwipeBackActivity implements IPersonView{
     @Override
     public void onFailure() {
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == REQUEST_CODE_SETTING_ACTIVITY && resultCode == RESULT_OK){
+            Glide.with(this).load(R.drawable.icon).into(userAvatar);
+            userNameText.setText("请登录");
+            userAvatar.setOnClickListener(v -> startActivityForResult(new Intent(PersonActivity.this,LoginActivity.class),REQUEST_CODE_LOGIN_ACTIVITY));
+        }
+        if (requestCode == REQUEST_CODE_LOGIN_ACTIVITY && resultCode == RESULT_OK){
+            isLogin = sharedPreferences.getBoolean("isLogin",false);
+            userName = sharedPreferences.getString("username",null);
+            personPre.getUserInfo(userName);
+        }
+        super.onActivityResult(requestCode,resultCode,data);
     }
 }
