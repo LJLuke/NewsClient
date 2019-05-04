@@ -11,7 +11,7 @@ public class KeyWordHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table keyWords(id integer primary key autoincrement,keyWord varchar(200) primary key autoincrement)");
+        db.execSQL("create table keyWords(id integer primary key autoincrement,keyWord varchar(200))");
     }
 
     @Override

@@ -49,7 +49,11 @@ public class KeyWordService extends IntentService{
             String name =  keyword.getName();
             double score = keyword.getScore();
             if (score > 5){
-                mDatabase.execSQL("insert into keyWords(keyWord) values('" + name + "')");
+                Cursor cursor = keyWordHelper.getReadableDatabase().rawQuery(
+                        "select keyWord from keyWords where keyWord = '" + name + "' ", null);
+                if (cursor.getCount() == 0){
+                    mDatabase.execSQL("insert into keyWords(keyWord) values('" + name + "')");
+                }
             }
         }
         mDatabase.close();

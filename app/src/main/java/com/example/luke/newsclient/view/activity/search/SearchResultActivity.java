@@ -60,6 +60,7 @@ public class SearchResultActivity extends SwipeBackActivity implements ISearchRe
         searchRvAdapter.setOnItemClickListener((url, position) -> {
             Intent intent = new Intent();
             intent.putExtra("url", url);
+            intent.putExtra("newsTitle","搜索正文");
             intent.setClass(SearchResultActivity.this,NewsDetailActivity.class);
             startActivity(intent);
         });

@@ -130,15 +130,19 @@ public class NewsDetailActivity extends SwipeBackActivity {
     }
 
     private void saveReadRecord(String title,String url) {
-        mDatabase = sqlHelper.getWritableDatabase();
-        mDatabase.execSQL("insert or ignore into readRecords(title,url) values('" + title + "','" + url + "')");
-        mDatabase.close();
+        Cursor cursor = sqlHelper.getReadableDatabase().rawQuery(
+                "select * from readRecords where title = '" + title + "' order by id desc ", null);
+        if (cursor.getCount() == 0){
+            mDatabase = sqlHelper.getWritableDatabase();
+            mDatabase.execSQL("insert or ignore into readRecords(title,url) values('" + title + "','" + url + "')");
+            mDatabase.close();
+        }
     }
 
     private List<String> getReadRecordTitle() {
         List<String> list = new ArrayList<>();
         Cursor cursor = sqlHelper.getReadableDatabase().rawQuery(
-                "select title from readRecords where title like '%" + "" + "%' order by id desc ", null);
+                "select * from readRecords where title like '%" + "" + "%' order by id desc ", null);
         while (cursor.moveToNext()) {
             list.add(cursor.getString(cursor.getColumnIndex("title")));
         }
